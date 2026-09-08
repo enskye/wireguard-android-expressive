@@ -4,24 +4,149 @@
   -->
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="WireGuardTheme.Toolbar" parent="Widget.Material3.Toolbar">
-        <item name="android:background">?attr/colorSurface</item>
+    <style name="WireGuardTheme.AddPeerButton" parent="Widget.Material3Expressive.Button.IconButton.Tonal">
+        <item name="materialSizeOverlay">@style/SizeOverlay.Material3Expressive.Button.IconButton.Large</item>
+    </style>
+
+    <style name="WireGuardTheme.FabMenuItem" parent="Widget.Material3Expressive.ExtendedFloatingActionButton.Small">
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="backgroundTint">?attr/colorSecondaryContainer</item>
+        <item name="iconTint">?attr/colorOnSecondaryContainer</item>
+        <item name="android:textColor">?attr/colorOnSecondaryContainer</item>
+    </style>
+
+    <style name="WireGuardTheme.ToolbarActionButton" parent="Widget.Material3Expressive.Button.IconButton.Filled">
+        <item name="materialSizeOverlay">@style/WireGuardTheme.ToolbarActionButton.Size</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="iconSize">20dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="backgroundTint">?attr/colorSurfaceBright</item>
+        <item name="iconTint">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="WireGuardTheme.ToolbarActionButton.Size" parent="">
+        <item name="containerPaddingStart">10dp</item>
+        <item name="containerPaddingEnd">10dp</item>
+        <item name="containerPaddingTop">10dp</item>
+        <item name="containerPaddingBottom">10dp</item>
+        <item name="containerInsetTop">0dp</item>
+        <item name="containerInsetBottom">0dp</item>
+        <item name="containerInsetLeft">0dp</item>
+        <item name="containerInsetRight">0dp</item>
+        <item name="containerIconSize">20dp</item>
+    </style>
+
+    <style name="WireGuardTheme.ActionBar" parent="Widget.Material3.ActionBar.Solid">
+        <item name="background">?attr/colorSurfaceContainer</item>
+        <item name="elevation">0dp</item>
+    </style>
+
+    <style name="WireGuardTheme.Toolbar" parent="Widget.Material3Expressive.Toolbar.Surface">
+        <item name="android:background">?attr/colorSurfaceContainer</item>
+        <item name="navigationIconTint">@null</item>
     </style>
 
     <style name="AppThemeBase" parent="WireGuardTheme">
         <item name="materialCardViewStyle">@style/WireGuardTheme.MaterialCardView</item>
         <item name="toolbarStyle">@style/WireGuardTheme.Toolbar</item>
+        <item name="preferenceTheme">@style/WireGuardTheme.Preference</item>
+        <item name="actionBarStyle">@style/WireGuardTheme.ActionBar</item>
+        <item name="homeAsUpIndicator">@drawable/ic_arrow_back_bubble</item>
+        <item name="android:homeAsUpIndicator">@drawable/ic_arrow_back_bubble</item>
+        <item name="textInputStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
         <item name="bottomSheetDialogTheme">@style/WireGuardTheme.BottomSheetDialog</item>
-        <item name="android:statusBarColor">?android:colorBackground</item>
+        <item name="materialAlertDialogTheme">@style/WireGuardTheme.AlertDialog</item>
+        <item name="materialSwitchStyle">@style/WireGuardTheme.MaterialSwitch</item>
+        <item name="android:windowBackground">?attr/colorSurfaceContainer</item>
+        <item name="android:statusBarColor">?attr/colorSurfaceContainer</item>
         <item name="android:windowLightStatusBar">@bool/light_status_bar</item>
     </style>
 
     <!-- Various additional API-specific features in values-v*/styles.xml -->
     <style name="AppTheme" parent="AppThemeBase" />
 
-    <style name="WireGuardTheme.MaterialCardView" parent="Widget.Material3.CardView.Elevated">
-        <item name="cornerRadius">4dp</item>
-        <item name="contentPadding">8dp</item>
+    <style name="WireGuardTheme.CollapsingToolbar.ExpandedTitle" parent="TextAppearance.Material3.DisplaySmall">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="WireGuardTheme.MaterialCardView" parent="Widget.Material3.CardView.Filled">
+        <item name="cardBackgroundColor">?attr/colorSurfaceBright</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.WireGuard.Card</item>
+        <item name="cardElevation">0dp</item>
+        <item name="contentPadding">16dp</item>
+    </style>
+
+    <style name="WireGuardTheme.Preference" parent="PreferenceThemeOverlay">
+        <item name="preferenceStyle">@style/WireGuardTheme.Preference.Item</item>
+        <item name="preferenceCategoryStyle">@style/WireGuardTheme.Preference.Category</item>
+        <item name="preferenceCategoryTitleTextColor">?attr/colorPrimary</item>
+        <item name="checkBoxPreferenceStyle">@style/WireGuardTheme.Preference.CheckBox</item>
+        <item name="switchPreferenceCompatStyle">@style/WireGuardTheme.Preference.Switch</item>
+        <item name="dialogPreferenceStyle">@style/WireGuardTheme.Preference.Dialog</item>
+        <item name="editTextPreferenceStyle">@style/WireGuardTheme.Preference.EditText</item>
+    </style>
+
+    <style name="WireGuardTheme.Preference.Category" parent="Preference.Category.Material">
+        <item name="android:layout">@layout/preference_category_expressive</item>
+    </style>
+
+    <style name="WireGuardTheme.Preference.Item" parent="Preference.Material">
+        <item name="android:layout">@layout/preference_expressive</item>
+        <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <style name="WireGuardTheme.Preference.CheckBox" parent="Preference.CheckBoxPreference.Material">
+        <item name="android:layout">@layout/preference_expressive</item>
+        <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <style name="WireGuardTheme.Preference.Switch" parent="Preference.SwitchPreferenceCompat.Material">
+        <item name="android:layout">@layout/preference_expressive</item>
+        <item name="android:widgetLayout">@layout/preference_widget_material_switch</item>
+        <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <style name="WireGuardTheme.Preference.Dialog" parent="Preference.DialogPreference.Material">
+        <item name="android:layout">@layout/preference_expressive</item>
+        <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <style name="WireGuardTheme.Preference.EditText" parent="Preference.DialogPreference.EditTextPreference.Material">
+        <item name="android:layout">@layout/preference_expressive</item>
+        <item name="iconSpaceReserved">false</item>
+    </style>
+
+    <style name="WireGuardTheme.SectionHeader" parent="">
+        <item name="android:textAppearance">?attr/textAppearanceTitleSmall</item>
+        <item name="android:textColor">?attr/colorPrimary</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.WireGuard.Card" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">@dimen/list_item_corner_radius</item>
+    </style>
+
+    <style name="WireGuardTheme.MaterialSwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="thumbIcon">@drawable/switch_thumb_icon</item>
+    </style>
+
+    <style name="WireGuardTheme.AlertDialog" parent="ThemeOverlay.Material3Expressive.MaterialAlertDialog">
+        <item name="android:windowAnimationStyle">@style/WireGuardTheme.DialogAnimation</item>
+    </style>
+
+    <style name="WireGuardTheme.DialogAnimation" parent="">
+        <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_exit</item>
     </style>
 
     <style name="WireGuardTheme.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">

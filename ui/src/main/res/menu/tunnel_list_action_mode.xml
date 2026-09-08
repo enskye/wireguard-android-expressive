@@ -11,6 +11,12 @@
         android:title="@string/select_all"
         app:showAsAction="always" />
     <item
+        android:id="@+id/menu_action_favourite"
+        android:alphabeticShortcut="f"
+        android:icon="@drawable/ic_action_favourite"
+        android:title="@string/favourite"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/menu_action_delete"
         android:alphabeticShortcut="d"
         android:icon="@drawable/ic_action_delete"

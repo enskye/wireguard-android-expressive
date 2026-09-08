@@ -37,9 +37,6 @@
     <string name="create_activity_title">Vytvoriť WireGuard tunel</string>
     <string name="create_bin_dir_error">Nepodarilo sa vytvoriť lokálny priečinok pre binárne súbory</string>
     <string name="create_downloads_file_error">Nepodarilo sa vytvoriť súbor v priečinku stiahnuté</string>
-    <string name="create_empty">Vytvoriť od počiatku</string>
-    <string name="create_from_file">Importovať zo súboru alebo archívu</string>
-    <string name="create_from_qr_code">Skenovať z QR kódu</string>
     <string name="create_output_dir_error">Nepodarilo sa vytvoriť výstupný adresár</string>
     <string name="create_temp_dir_error">Nepodarilo sa vytvoriť lokálny dočasný priečinok</string>
     <string name="create_tunnel">Vytvoriť tunel</string>

@@ -88,9 +88,6 @@
     <string name="create_activity_title">वायरगार्ड टनल बनाएं</string>
     <string name="create_bin_dir_error">स्थानीय बाइनरी निर्देशिका नहीं बना सकते</string>
     <string name="create_downloads_file_error">डाउनलोड निर्देशिका में फ़ाइल नहीं बना सकते</string>
-    <string name="create_empty">शुरू से बनाएँ</string>
-    <string name="create_from_file">फ़ाइल या संग्रह से आयात करें</string>
-    <string name="create_from_qr_code">QR कोड स्कैन करें</string>
     <string name="create_output_dir_error">आउटपुट निर्देशिका नहीं बना सकता</string>
     <string name="create_temp_dir_error">स्थानीय अस्थायी निर्देशिका नहीं बना सकते</string>
     <string name="create_tunnel">टनल बनाए</string>

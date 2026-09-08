@@ -3,6 +3,7 @@
   ~ SPDX-License-Identifier: Apache-2.0
   -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_activity_container"
     android:layout_width="match_parent"
@@ -10,9 +11,12 @@
     android:fitsSystemWindows="true"
     tools:context=".activity.TunnelCreatorActivity">
 
-    <androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
+    <include layout="@layout/app_bar" />
+
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/editor_fragment"
         android:name="com.wireguard.android.fragment.TunnelEditorFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright © 2017-2025 WireGuard LLC. All Rights Reserved.
+  ~ SPDX-License-Identifier: Apache-2.0
+  -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight">
+
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <corners
+                android:topLeftRadius="@dimen/list_item_corner_radius_inner"
+                android:topRightRadius="@dimen/list_item_corner_radius_inner"
+                android:bottomRightRadius="@dimen/list_item_corner_radius"
+                android:bottomLeftRadius="@dimen/list_item_corner_radius" />
+            <solid android:color="@android:color/white" />
+        </shape>
+    </item>
+
+    <item>
+        <shape android:shape="rectangle">
+            <corners
+                android:topLeftRadius="@dimen/list_item_corner_radius_inner"
+                android:topRightRadius="@dimen/list_item_corner_radius_inner"
+                android:bottomRightRadius="@dimen/list_item_corner_radius"
+                android:bottomLeftRadius="@dimen/list_item_corner_radius" />
+            <solid android:color="?attr/colorSurfaceBright" />
+        </shape>
+    </item>
+</ripple>

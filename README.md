@@ -1,40 +1,53 @@
-# Android GUI for [WireGuard](https://www.wireguard.com/)
+# WireGuard for Android — Material 3 Expressive
 
-**[Download from the Play Store](https://play.google.com/store/apps/details?id=com.wireguard.android)**
+A fork of [WireGuard for Android](https://github.com/WireGuard/wireguard-android)
+rebuilt on **Material 3 Expressive**. The app does exactly what upstream does;
+what changed is how it looks and how it moves.
 
-This is an Android GUI for [WireGuard](https://www.wireguard.com/). It [opportunistically uses the kernel implementation](https://git.zx2c4.com/android_kernel_wireguard/about/), and falls back to using the non-root [userspace implementation](https://git.zx2c4.com/wireguard-go/about/).
+The package name is kept as `com.wireguard.android`, so a build of this
+**replaces** the official app rather than installing alongside it.
+
+## What the redesign changes
+
+- **One activity, two pages.** The tunnel list and settings are pages of a
+  single `ViewPager2` behind a navigation bar, instead of separate activities.
+  Detail, editor and the log viewer open as fragments over that pager, so the
+  app bar, the navigation bar and the back behaviour are decided in one place.
+- **A FAB menu instead of a bottom sheet.** Adding a tunnel expands the FAB
+  into three labelled actions, with the icon morphing between plus and cross.
+  The FAB hides on scroll and stays clear of the navigation bar.
+- **Expressive toolbars.** Toolbar actions sit in shaped containers and are
+  joined into Material's connected button group, sized through Material's own
+  size overlay rather than by hand.
+- **Expressive settings.** Categories instead of androidx's automatic
+  "Advanced" fold, grouped rows with top/middle/bottom backgrounds, Material
+  switches, and a scrollbar that matches the rest of the app.
+- **Real transitions.** Screens slide and fade as one movement, dialogs grow
+  into place and dim the page behind them the way the FAB menu does.
+- **A rebuilt app picker.** The per-app exclusion screen is a list with
+  Material's list-item metrics and two action pills, not a column of blobs.
+- **Favourite tunnels**, which sort to the top of the list.
 
 ## Building
 
-```
-$ git clone --recurse-submodules https://git.zx2c4.com/wireguard-android
-$ cd wireguard-android
-$ ./gradlew assembleRelease
-```
+Requires **JDK 17** specifically (newer JDKs break the Android Gradle Plugin's
+`jlink` transform), the Android SDK (platform 37.2, build-tools 37.0.0), and
+NDK 27+ with CMake for the native `wg`/`wg-quick` binaries and the userspace
+`libwg-go.so`. No Go toolchain setup is needed — `tunnel/tools/libwg-go`
+downloads and patches its own pinned Go release.
 
-macOS users may need [flock(1)](https://github.com/discoteq/flock).
-
-## Embedding
-
-The tunnel library is [on Maven Central](https://search.maven.org/artifact/com.wireguard.android/tunnel), alongside [extensive class library documentation](https://javadoc.io/doc/com.wireguard.android/tunnel).
-
-```
-implementation 'com.wireguard.android:tunnel:$wireguardTunnelVersion'
+```sh
+export JAVA_HOME=/path/to/jdk-17
+export ANDROID_HOME=/path/to/android-sdk
+./gradlew :ui:assembleRelease
 ```
 
-The library makes use of Java 8 features, so be sure to support those in your gradle configuration with [desugaring](https://developer.android.com/studio/write/java8-support#library-desugaring):
+Release builds are signed from environment variables — `WG_KEYSTORE_PATH`,
+`WG_KEYSTORE_PASSWORD`, `WG_KEY_ALIAS`, `WG_KEY_PASSWORD`. No keystore is
+included in this repo (see `.gitignore`). Because the package name matches
+the official app, installing a build signed with a different key means
+uninstalling the official app first.
 
-```
-compileOptions {
-    sourceCompatibility JavaVersion.VERSION_17
-    targetCompatibility JavaVersion.VERSION_17
-    coreLibraryDesugaringEnabled = true
-}
-dependencies {
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.3"
-}
-```
+## License
 
-## Translating
-
-Please help us translate the app into several languages on [our translation platform](https://crowdin.com/project/WireGuard).
+Same as upstream WireGuard for Android — see [COPYING](COPYING) (Apache 2.0).

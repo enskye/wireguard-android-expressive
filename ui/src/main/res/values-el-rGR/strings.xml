@@ -80,9 +80,6 @@
     <string name="error_qr_checksum">Αποτυχία επαλήθευσης checksum κωδικού QR</string>
     <string name="cancel">Ακύρωση</string>
     <string name="create_activity_title">Δημιουργία διόδου WireGuard</string>
-    <string name="create_empty">Δημιουργία από την αρχή</string>
-    <string name="create_from_file">Εισαγωγή από αρχείο ή αρχειοθήκη</string>
-    <string name="create_from_qr_code">Σάρωση από κωδικό QR</string>
     <string name="create_tunnel">Δημιουργία διόδου</string>
     <string name="copied_to_clipboard">Το %s αντιγράφηκε στο πρόχειρο</string>
     <string name="dark_theme_title">Χρήση σκούρου θέματος</string>

@@ -65,6 +65,20 @@
     <string name="allow_remote_control_intents_summary_off">External apps may not toggle tunnels (recommended)</string>
     <string name="allow_remote_control_intents_summary_on">External apps may toggle tunnels (advanced)</string>
     <string name="allow_remote_control_intents_title">Allow remote control apps</string>
+    <string name="m3_ref_typeface_brand_regular" translatable="false">google-sans</string>
+    <string name="m3_ref_typeface_brand_medium" translatable="false">google-sans-medium</string>
+    <string name="m3_ref_typeface_plain_regular" translatable="false">google-sans-text</string>
+    <string name="m3_ref_typeface_plain_medium" translatable="false">google-sans-text-medium</string>
+
+    <string name="favourite">Favourite</string>
+    <string name="unfavourite">Remove favourite</string>
+    <string name="pref_category_general">General</string>
+    <string name="pref_category_tunnels">Tunnels</string>
+    <string name="pref_category_kernel">Kernel module</string>
+    <string name="pref_category_integrations">Integrations</string>
+    <string name="fab_menu_import">Import</string>
+    <string name="fab_menu_scan">Scan</string>
+    <string name="fab_menu_create">Create</string>
     <string name="allowed_ips">Allowed IPs</string>
     <string name="app_name" translatable="false">WireGuard</string>
     <string name="bad_config_context">%1$s\'s %2$s</string>
@@ -96,9 +110,6 @@
     <string name="create_activity_title">Create WireGuard Tunnel</string>
     <string name="create_bin_dir_error">Cannot create local binary directory</string>
     <string name="create_downloads_file_error">Cannot create file in downloads directory</string>
-    <string name="create_empty">Create from scratch</string>
-    <string name="create_from_file">Import from file or archive</string>
-    <string name="create_from_qr_code">Scan from QR code</string>
     <string name="create_output_dir_error">Cannot create output directory</string>
     <string name="create_temp_dir_error">Cannot create local temporary directory</string>
     <string name="create_tunnel">Create Tunnel</string>
@@ -197,6 +208,10 @@
     <string name="restore_on_boot_title">Restore on boot</string>
     <string name="save">Save</string>
     <string name="select_all">Select all</string>
+    <string name="tunnels">Tunnels</string>
+    <string name="log_viewer_screen_title">Log viewer</string>
+    <string name="tunnel_detail_screen_title">Details</string>
+    <string name="tunnel_editor_screen_title">Editor</string>
     <string name="settings">Settings</string>
     <string name="shell_exit_status_read_error">Shell cannot read exit status</string>
     <string name="shell_marker_count_error">Shell expected 4 markers, received %d</string>

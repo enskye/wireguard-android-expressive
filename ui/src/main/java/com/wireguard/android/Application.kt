@@ -72,7 +72,8 @@ class Application : android.app.Application() {
                 UserKnobs.multipleTunnels.onEach {
                     wgQuickBackend.setMultipleTunnels(it)
                 }.launchIn(coroutineScope)
-            } catch (ignored: Exception) {
+            } catch (e: Exception) {
+                Log.e(TAG, "WgQuickBackend setup failed, falling back to GoBackend", e)
             }
         }
         if (backend == null) {

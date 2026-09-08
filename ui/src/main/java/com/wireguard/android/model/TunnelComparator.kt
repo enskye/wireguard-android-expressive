@@ -6,6 +6,9 @@
 package com.wireguard.android.model
 
 object TunnelComparator : Comparator<String> {
+    @Volatile
+    var favourites: Set<String> = emptySet()
+
     private class NaturalSortString(originalString: String) {
         class NaturalSortToken(val maybeString: String?, val maybeNumber: Int?) : Comparable<NaturalSortToken> {
             override fun compareTo(other: NaturalSortToken): Int {
@@ -46,6 +49,10 @@ object TunnelComparator : Comparator<String> {
     override fun compare(a: String, b: String): Int {
         if (a == b)
             return 0
+        val fa = a in favourites
+        val fb = b in favourites
+        if (fa != fb)
+            return if (fa) -1 else 1
         val na = NaturalSortString(a)
         val nb = NaturalSortString(b)
         for (i in 0 until nb.tokens.size) {

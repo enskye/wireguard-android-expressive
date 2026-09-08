@@ -93,9 +93,6 @@
     <string name="create_activity_title">ساخت تونل WireGuard</string>
     <string name="create_bin_dir_error">نمی‌توان دایرکتوری باینری محلی را ایجاد کرد</string>
     <string name="create_downloads_file_error">نمی‌توان در مسیر بارگیری پرونده‌ای ساخت</string>
-    <string name="create_empty">ساختن از ابتدا</string>
-    <string name="create_from_file">واردکردن از طریق پرونده یا آرشیو</string>
-    <string name="create_from_qr_code">اسکن از کد QR</string>
     <string name="create_output_dir_error">نمی‌توان دایرکتوری خروجی را ایجاد کرد</string>
     <string name="create_temp_dir_error">نمی‌توان دایرکتوری موقت محلی را ساخت</string>
     <string name="create_tunnel">ساختن تونل</string>

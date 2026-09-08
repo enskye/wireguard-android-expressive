@@ -5,6 +5,7 @@
 package com.wireguard.android.fragment
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +23,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.zxing.qrcode.QRCodeReader
 import com.journeyapps.barcodescanner.ScanContract
@@ -33,7 +36,9 @@ import com.wireguard.android.databinding.ObservableKeyedRecyclerViewAdapter.RowC
 import com.wireguard.android.databinding.TunnelListFragmentBinding
 import com.wireguard.android.databinding.TunnelListItemBinding
 import com.wireguard.android.model.ObservableTunnel
+import com.wireguard.android.model.TunnelComparator
 import com.wireguard.android.updater.SnackbarUpdateShower
+import com.wireguard.android.widget.FabMenu
 import com.wireguard.android.util.ErrorMessages
 import com.wireguard.android.util.QrCodeFromFileScanner
 import com.wireguard.android.util.TunnelImporter
@@ -81,10 +86,18 @@ class TunnelListFragment : BaseFragment() {
         }
     }
 
+    private val createFab: FloatingActionButton?
+        get() = activity?.findViewById(R.id.create_fab)
+
     private val snackbarUpdateShower = SnackbarUpdateShower(this)
+
+    private var fabMenu: FabMenu? = null
+    private var fabMenuBackCallback: OnBackPressedCallback? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        fabMenuBackCallback = requireActivity().onBackPressedDispatcher
+                .addCallback(viewLifecycleOwner, enabled = false) { fabMenu?.close() }
         if (savedInstanceState != null) {
             val checkedItems = savedInstanceState.getIntegerArrayList(CHECKED_ITEMS)
             if (checkedItems != null) {
@@ -99,35 +112,43 @@ class TunnelListFragment : BaseFragment() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         binding = TunnelListFragmentBinding.inflate(inflater, container, false)
-        val bottomSheet = AddTunnelsSheet()
         binding?.apply {
-            createFab.setOnClickListener {
-                if (childFragmentManager.findFragmentByTag("BOTTOM_SHEET") != null)
-                    return@setOnClickListener
-                childFragmentManager.setFragmentResultListener(AddTunnelsSheet.REQUEST_KEY_NEW_TUNNEL, viewLifecycleOwner) { _, bundle ->
-                    when (bundle.getString(AddTunnelsSheet.REQUEST_METHOD)) {
-                        AddTunnelsSheet.REQUEST_CREATE -> {
-                            startActivity(Intent(requireActivity(), TunnelCreatorActivity::class.java))
-                        }
-
-                        AddTunnelsSheet.REQUEST_IMPORT -> {
-                            tunnelFileImportResultLauncher.launch("*/*")
-                        }
-
-                        AddTunnelsSheet.REQUEST_SCAN -> {
-                            qrImportResultLauncher.launch(
-                                ScanOptions()
-                                    .setOrientationLocked(false)
-                                    .setBeepEnabled(false)
-                                    .setPrompt(getString(R.string.qr_code_hint))
-                            )
-                        }
-                    }
+            val activity = activity
+            val scrim = activity?.findViewById<View>(R.id.fab_menu_scrim)
+            val fab = createFab
+            val actions = listOfNotNull(
+                activity?.findViewById<View>(R.id.fab_create_from_file),
+                activity?.findViewById<View>(R.id.fab_create_from_qrcode),
+                activity?.findViewById<View>(R.id.fab_create_empty),
+            )
+            if (fab != null && scrim != null && actions.size == 3) {
+                val menu = FabMenu(fab, scrim, actions) { open ->
+                    fabMenuBackCallback?.isEnabled = open
                 }
-                bottomSheet.showNow(childFragmentManager, "BOTTOM_SHEET")
+                fabMenu = menu
+                fab.setOnClickListener { menu.toggle() }
+                actions[0].setOnClickListener {
+                    menu.close()
+                    tunnelFileImportResultLauncher.launch("*/*")
+                }
+                actions[1].setOnClickListener {
+                    menu.close()
+                    qrImportResultLauncher.launch(
+                        ScanOptions()
+                            .setOrientationLocked(false)
+                            .setBeepEnabled(false)
+                            .setPrompt(getString(R.string.qr_code_hint))
+                    )
+                }
+                actions[2].setOnClickListener {
+                    menu.close()
+                    startActivity(Intent(requireActivity(), TunnelCreatorActivity::class.java))
+                }
+                if (activity?.packageManager?.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY) != true)
+                    actions[1].visibility = View.GONE
             }
             executePendingBindings()
-            snackbarUpdateShower.attach(mainContainer, createFab)
+            createFab?.let { snackbarUpdateShower.attach(mainContainer, it) }
         }
         backPressedCallback = requireActivity().onBackPressedDispatcher.addCallback(this) { actionMode?.finish() }
         backPressedCallback?.isEnabled = false
@@ -186,6 +207,8 @@ class TunnelListFragment : BaseFragment() {
                     actionModeListener.toggleItemChecked(position)
                     true
                 }
+                binding.favouriteIndicator.visibility =
+                    if (item.name in TunnelComparator.favourites) View.VISIBLE else View.GONE
                 if (actionMode != null)
                     (binding.root as MultiselectableRelativeLayout).setMultiSelected(actionModeListener.checkedItems.contains(position))
                 else
@@ -198,7 +221,7 @@ class TunnelListFragment : BaseFragment() {
         val binding = binding
         if (binding != null)
             Snackbar.make(binding.mainContainer, message, Snackbar.LENGTH_LONG)
-                .setAnchorView(binding.createFab)
+                .setAnchorView(createFab)
                 .show()
         else
             Toast.makeText(activity ?: Application.get(), message, Toast.LENGTH_SHORT).show()
@@ -221,7 +244,7 @@ class TunnelListFragment : BaseFragment() {
                 R.id.menu_action_delete -> {
                     val activity = activity ?: return true
                     val copyCheckedItems = HashSet(checkedItems)
-                    binding?.createFab?.apply {
+                    createFab?.apply {
                         visibility = View.VISIBLE
                         scaleX = 1f
                         scaleY = 1f
@@ -252,6 +275,19 @@ class TunnelListFragment : BaseFragment() {
                     true
                 }
 
+                R.id.menu_action_favourite -> {
+                    val positions = HashSet(checkedItems)
+                    lifecycleScope.launch {
+                        val manager = Application.getTunnelManager()
+                        val tunnels = manager.getTunnels()
+                        val names = positions.mapNotNull { tunnels.getOrNull(it)?.name }
+                        manager.setFavourite(names, !manager.areAllFavourites(names))
+                        activity?.findViewById<AppBarLayout>(R.id.app_appbar)?.setExpanded(true, false)
+                    }
+                    mode.finish()
+                    true
+                }
+
                 else -> false
             }
         }
@@ -262,7 +298,7 @@ class TunnelListFragment : BaseFragment() {
             if (activity != null) {
                 resources = activity!!.resources
             }
-            animateFab(binding?.createFab, false)
+            animateFab(createFab, false)
             mode.menuInflater.inflate(R.menu.tunnel_list_action_mode, menu)
             binding?.tunnelList?.adapter?.notifyDataSetChanged()
             return true
@@ -272,13 +308,25 @@ class TunnelListFragment : BaseFragment() {
             actionMode = null
             backPressedCallback?.isEnabled = false
             resources = null
-            animateFab(binding?.createFab, true)
+            animateFab(createFab, true)
             checkedItems.clear()
             binding?.tunnelList?.adapter?.notifyDataSetChanged()
         }
 
         override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
             updateTitle(mode)
+            val favouriteItem = menu.findItem(R.id.menu_action_favourite)
+            if (favouriteItem != null) {
+                val positions = HashSet(checkedItems)
+                lifecycleScope.launch {
+                    val manager = Application.getTunnelManager()
+                    val tunnels = manager.getTunnels()
+                    val names = positions.mapNotNull { tunnels.getOrNull(it)?.name }
+                    favouriteItem.setTitle(
+                        if (manager.areAllFavourites(names)) R.string.unfavourite else R.string.favourite
+                    )
+                }
+            }
             return false
         }
 

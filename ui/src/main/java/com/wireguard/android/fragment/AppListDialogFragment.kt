@@ -6,14 +6,14 @@ package com.wireguard.android.fragment
 
 import android.Manifest
 import android.app.Dialog
+import android.content.DialogInterface
+import android.view.WindowManager
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PackageInfoFlags
 import android.os.Build
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.databinding.Observable
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
@@ -22,6 +22,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import com.wireguard.android.BR
 import com.wireguard.android.R
+import com.wireguard.android.widget.ExpressiveScrollbar
 import com.wireguard.android.databinding.AppListDialogFragmentBinding
 import com.wireguard.android.databinding.ObservableKeyedArrayList
 import com.wireguard.android.model.ApplicationData
@@ -34,8 +35,8 @@ class AppListDialogFragment : DialogFragment() {
     private val appData = ObservableKeyedArrayList<String, ApplicationData>()
     private var currentlySelectedApps = emptyList<String>()
     private var initiallyExcluded = false
-    private var button: Button? = null
     private var tabs: TabLayout? = null
+    private var binding: AppListDialogFragmentBinding? = null
 
     private fun loadData() {
         val activity = activity ?: return
@@ -93,19 +94,22 @@ class AppListDialogFragment : DialogFragment() {
 
     private fun setButtonText() {
         val numSelected = appData.count { it.isSelected }
-        button?.text = if (numSelected == 0)
-            getString(R.string.use_all_applications)
+        binding?.confirm?.text = if (numSelected == 0)
+            getString(R.string.all_applications)
         else when (tabs?.selectedTabPosition) {
             0 -> resources.getQuantityString(R.plurals.exclude_n_applications, numSelected, numSelected)
             1 -> resources.getQuantityString(R.plurals.include_n_applications, numSelected, numSelected)
-            else -> null
+            else -> getString(R.string.all_applications)
         }
+        binding?.selectAll?.isChecked = appData.isNotEmpty() && numSelected == appData.size
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val alertDialogBuilder = MaterialAlertDialogBuilder(requireActivity())
         val binding = AppListDialogFragmentBinding.inflate(requireActivity().layoutInflater, null, false)
+        this.binding = binding
         binding.executePendingBindings()
+        alertDialogBuilder.setTitle(R.string.applications)
         alertDialogBuilder.setView(binding.root)
         tabs = binding.tabs
         tabs?.apply {
@@ -116,23 +120,19 @@ class AppListDialogFragment : DialogFragment() {
                 override fun onTabSelected(tab: TabLayout.Tab?) = setButtonText()
             })
         }
-        alertDialogBuilder.setPositiveButton(" ") { _, _ -> setSelectionAndDismiss() }
-        alertDialogBuilder.setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
-        alertDialogBuilder.setNeutralButton(R.string.toggle_all) { _, _ -> }
+        binding.confirm.setOnClickListener { setSelectionAndDismiss() }
+        binding.cancel.setOnClickListener { dismiss() }
+        binding.selectAll.setOnClickListener {
+            val selectAll = appData.none { it.isSelected }
+            appData.forEach { it.isSelected = selectAll }
+        }
         binding.fragment = this
         binding.appData = appData
         loadData()
         val dialog = alertDialogBuilder.create()
-        dialog.setOnShowListener {
-            button = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-            setButtonText()
-            dialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener { _ ->
-                val selectAll = appData.none { it.isSelected }
-                appData.forEach {
-                    it.isSelected = selectAll
-                }
-            }
-        }
+        dialog.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+        ExpressiveScrollbar.attach(binding.appList)
+        dialog.setOnShowListener { setButtonText() }
         return dialog
     }
 
@@ -151,6 +151,10 @@ class AppListDialogFragment : DialogFragment() {
             }
         )
         dismiss()
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
     }
 
     companion object {

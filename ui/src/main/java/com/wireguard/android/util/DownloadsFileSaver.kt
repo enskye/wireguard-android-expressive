@@ -13,7 +13,7 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.MediaStore.MediaColumns
-import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultCaller
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -26,14 +26,14 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.OutputStream
 
-class DownloadsFileSaver(private val context: ComponentActivity) {
+class DownloadsFileSaver(private val caller: ActivityResultCaller, private val context: Context) {
     private lateinit var activityResult: ActivityResultLauncher<String>
     private lateinit var futureGrant: CompletableDeferred<Boolean>
 
     init {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             futureGrant = CompletableDeferred()
-            activityResult = context.registerForActivityResult(ActivityResultContracts.RequestPermission()) { ret -> futureGrant.complete(ret) }
+            activityResult = caller.registerForActivityResult(ActivityResultContracts.RequestPermission()) { ret -> futureGrant.complete(ret) }
         }
     }
 

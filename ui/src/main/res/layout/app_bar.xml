@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright © 2017-2025 WireGuard LLC. All Rights Reserved.
+  ~ SPDX-License-Identifier: Apache-2.0
+  -->
+<com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_appbar"
+    style="@style/Widget.Material3Expressive.AppBarLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorSurfaceContainer"
+    android:fitsSystemWindows="true"
+    app:liftOnScroll="false">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        android:id="@+id/app_collapsing_toolbar"
+        style="@style/Widget.Material3Expressive.CollapsingToolbar.Large"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/expanded_bar_height"
+        android:fitsSystemWindows="true"
+        app:collapsedTitleGravity="center_vertical|start"
+        app:collapsedTitleTextColor="?attr/colorOnSurface"
+        app:contentScrim="?attr/colorSurfaceContainer"
+        app:expandedTitleGravity="center_vertical|start"
+        app:expandedTitleMarginStart="26dp"
+        app:expandedTitleTextAppearance="@style/WireGuardTheme.CollapsingToolbar.ExpandedTitle"
+        app:expandedTitleTextColor="?attr/colorOnSurface"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+        app:maxLines="2"
+        app:statusBarScrim="@android:color/transparent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/app_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            android:paddingStart="17dp"
+            android:paddingEnd="16dp"
+            app:layout_collapseMode="pin"
+            app:navigationIcon="@drawable/ic_arrow_back_bubble"
+            app:titleMarginStart="8dp"
+            app:titleTextAppearance="?attr/textAppearanceTitleLarge"
+            app:titleTextColor="?attr/colorOnSurface">
+
+            <ImageView
+                android:id="@+id/toolbar_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:importantForAccessibility="no"
+                android:src="@drawable/ic_toolbar_logo" />
+
+            <com.google.android.material.button.MaterialButtonGroup
+                android:id="@+id/toolbar_actions"
+                style="@style/Widget.Material3Expressive.MaterialButtonGroup.Connected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:spacing="2dp"
+                app:innerCornerSize="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action_edit"
+                    style="@style/WireGuardTheme.ToolbarActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/edit"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_action_edit" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action_save"
+                    style="@style/WireGuardTheme.ToolbarActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/save"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_action_save" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/action_save_log"
+                    style="@style/WireGuardTheme.ToolbarActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/log_export_title"
+                    android:visibility="gone"
+                    app:icon="@drawable/ic_action_save" />
+
+            </com.google.android.material.button.MaterialButtonGroup>
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+</com.google.android.material.appbar.AppBarLayout>

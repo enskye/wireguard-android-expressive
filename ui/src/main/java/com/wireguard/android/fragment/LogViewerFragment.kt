@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-package com.wireguard.android.activity
+package com.wireguard.android.fragment
 
 import android.content.ClipDescription.compareMimeTypes
 import android.content.ContentProvider
@@ -22,24 +22,30 @@ import android.text.style.StyleSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.collection.CircularArray
 import androidx.core.app.ShareCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.wireguard.android.BuildConfig
 import com.wireguard.android.R
-import com.wireguard.android.databinding.LogViewerActivityBinding
+import com.wireguard.android.databinding.LogViewerFragmentBinding
 import com.wireguard.android.util.DownloadsFileSaver
+import com.wireguard.android.widget.ExpressiveScrollbar
+import com.wireguard.android.util.hideFullyBelowNavigationBar
+import com.wireguard.android.util.padForNavigationBar
 import com.wireguard.android.util.ErrorMessages
 import com.wireguard.android.util.resolveAttribute
 import com.wireguard.crypto.KeyPair
@@ -60,8 +66,8 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-class LogViewerActivity : AppCompatActivity() {
-    private lateinit var binding: LogViewerActivityBinding
+class LogViewerFragment : Fragment(), MenuProvider {
+    private lateinit var binding: LogViewerFragmentBinding
     private lateinit var logAdapter: LogEntryAdapter
     private var logLines = CircularArray<LogLine>()
     private var rawLogLines = CircularArray<String>()
@@ -72,88 +78,96 @@ class LogViewerActivity : AppCompatActivity() {
         yearFormatter.format(Date())
     }
 
-    private val defaultColor by lazy { resolveAttribute(com.google.android.material.R.attr.colorOnSurface) }
+    private val defaultColor by lazy { requireContext().resolveAttribute(com.google.android.material.R.attr.colorOnSurface) }
 
-    private val debugColor by lazy { ResourcesCompat.getColor(resources, R.color.debug_tag_color, theme) }
+    private val debugColor by lazy { ResourcesCompat.getColor(resources, R.color.debug_tag_color, requireContext().theme) }
 
-    private val errorColor by lazy { ResourcesCompat.getColor(resources, R.color.error_tag_color, theme) }
+    private val errorColor by lazy { ResourcesCompat.getColor(resources, R.color.error_tag_color, requireContext().theme) }
 
-    private val infoColor by lazy { ResourcesCompat.getColor(resources, R.color.info_tag_color, theme) }
+    private val infoColor by lazy { ResourcesCompat.getColor(resources, R.color.info_tag_color, requireContext().theme) }
 
-    private val warningColor by lazy { ResourcesCompat.getColor(resources, R.color.warning_tag_color, theme) }
+    private val warningColor by lazy { ResourcesCompat.getColor(resources, R.color.warning_tag_color, requireContext().theme) }
 
     private var lastUri: Uri? = null
 
     private fun revokeLastUri() {
         lastUri?.let {
             LOGS.remove(it.pathSegments.lastOrNull())
-            revokeUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            context?.revokeUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
             lastUri = null
         }
     }
 
+    private val revokeLastActivityResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { revokeLastUri() }
+
+    private val shareFab: FloatingActionButton?
+        get() = activity?.findViewById(R.id.share_fab)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = LogViewerActivityBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        downloadsFileSaver = DownloadsFileSaver(this, requireContext())
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = LogViewerFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        binding.recyclerView.padForNavigationBar()
         logAdapter = LogEntryAdapter()
         binding.recyclerView.apply {
             recyclerView = this
             layoutManager = LinearLayoutManager(context)
             adapter = logAdapter
-            addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+            ExpressiveScrollbar.attach(this)
         }
 
         lifecycleScope.launch(Dispatchers.IO) { streamingLog() }
 
-        val revokeLastActivityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            revokeLastUri()
-        }
-
-        binding.shareFab.setOnClickListener {
-            lifecycleScope.launch {
-                revokeLastUri()
-                val key = KeyPair().privateKey.toHex()
-                LOGS[key] = rawLogBytes()
-                lastUri = Uri.parse("content://${BuildConfig.APPLICATION_ID}.exported-log/$key")
-                val shareIntent = ShareCompat.IntentBuilder(this@LogViewerActivity)
-                    .setType("text/plain")
-                    .setSubject(getString(R.string.log_export_subject))
-                    .setStream(lastUri)
-                    .setChooserTitle(R.string.log_export_title)
-                    .createChooserIntent()
-                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                grantUriPermission("android", lastUri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                revokeLastActivityResultLauncher.launch(shareIntent)
+        shareFab?.apply {
+            hideFullyBelowNavigationBar()
+            setOnClickListener {
+                lifecycleScope.launch {
+                    revokeLastUri()
+                    val key = KeyPair().privateKey.toHex()
+                    LOGS[key] = rawLogBytes()
+                    lastUri = Uri.parse("content://${BuildConfig.APPLICATION_ID}.exported-log/$key")
+                    val shareIntent = ShareCompat.IntentBuilder(requireActivity())
+                        .setType("text/plain")
+                        .setSubject(getString(R.string.log_export_subject))
+                        .setStream(lastUri)
+                        .setChooserTitle(R.string.log_export_title)
+                        .createChooserIntent()
+                        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    requireContext().grantUriPermission("android", lastUri, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    revokeLastActivityResultLauncher.launch(shareIntent)
+                }
             }
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.log_viewer, menu)
+    override fun onDestroyView() {
+        shareFab?.setOnClickListener(null)
+        super.onDestroyView()
+    }
+
+    override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.log_viewer, menu)
         saveButton = menu.findItem(R.id.save_log)
+    }
+
+    override fun onMenuItemSelected(item: MenuItem): Boolean {
+        if (item.itemId != R.id.save_log) return false
+        saveButton?.isEnabled = false
+        lifecycleScope.launch { saveLog() }
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            android.R.id.home -> {
-                finish()
-                true
-            }
-
-            R.id.save_log -> {
-                saveButton?.isEnabled = false
-                lifecycleScope.launch { saveLog() }
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
-    private val downloadsFileSaver = DownloadsFileSaver(this)
+    private lateinit var downloadsFileSaver: DownloadsFileSaver
 
     private suspend fun rawLogBytes(): ByteArray {
         val builder = StringBuilder()
@@ -182,12 +196,12 @@ class LogViewerActivity : AppCompatActivity() {
         if (outputFile == null)
             return
         Snackbar.make(
-            findViewById(android.R.id.content),
+            requireActivity().findViewById(android.R.id.content),
             if (exception == null) getString(R.string.log_export_success, outputFile.fileName)
             else getString(R.string.log_export_error, ErrorMessages[exception]),
             if (exception == null) Snackbar.LENGTH_SHORT else Snackbar.LENGTH_LONG
         )
-            .setAnchorView(binding.shareFab)
+            .setAnchorView(shareFab)
             .show()
     }
 
@@ -246,13 +260,16 @@ class LogViewerActivity : AppCompatActivity() {
                         logLines.removeFromStart(numToRemove)
                         logAdapter.notifyItemRangeRemoved(0, numToRemove)
                         posStart -= numToRemove
+                        if (logLines.size() > 0) logAdapter.notifyItemChanged(0)
 
                     }
                     for (bufferedLine in bufferedLogLines) {
                         logLines.addLast(bufferedLine)
                     }
                     bufferedLogLines.clear()
+                    val previousLast = posStart - 1
                     logAdapter.notifyItemRangeInserted(posStart, logLines.size() - posStart)
+                    if (previousLast >= 0) logAdapter.notifyItemChanged(previousLast)
                     posStart = logLines.size()
 
                     if (isScrolledToBottomAlready) {
@@ -286,15 +303,10 @@ class LogViewerActivity : AppCompatActivity() {
     private data class LogLine(val pid: Int, val tid: Int, val time: Date?, val level: String, val tag: String, var msg: String)
 
     companion object {
-        /**
-         * Match a single line of `logcat -v threadtime`, such as:
-         *
-         * <pre>05-26 11:02:36.886 5689 5689 D AndroidRuntime: CheckJNI is OFF.</pre>
-         */
         private val THREADTIME_LINE: Pattern =
             Pattern.compile("^(\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}.\\d{3})(?:\\s+[0-9A-Za-z]+)?\\s+(\\d+)\\s+(\\d+)\\s+([A-Z])\\s+(.+?)\\s*: (.*)$")
         private val LOGS: MutableMap<String, ByteArray> = ConcurrentHashMap()
-        private const val TAG = "WireGuard/LogViewerActivity"
+        private const val TAG = "WireGuard/LogViewer"
     }
 
     private inner class LogEntryAdapter : RecyclerView.Adapter<LogEntryAdapter.ViewHolder>() {
@@ -320,6 +332,13 @@ class LogViewerActivity : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            val last = itemCount - 1
+            holder.layout.setBackgroundResource(when {
+                position == 0 && position == last -> R.drawable.preference_item_background
+                position == 0 -> R.drawable.preference_item_background_top
+                position == last -> R.drawable.preference_item_background_bottom
+                else -> R.drawable.preference_item_background_middle
+            })
             val line = logLines[position]
             val spannable = if (position > 0 && logLines[position - 1].tag == line.tag)
                 SpannableString(line.msg)

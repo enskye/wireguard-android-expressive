@@ -92,9 +92,6 @@
     <string name="create_activity_title">WireGuard-Tunnel erstellen</string>
     <string name="create_bin_dir_error">Lokales Binärverzeichnis kann nicht erstellt werden</string>
     <string name="create_downloads_file_error">Datei konnte im Download-Verzeichnis nicht erstellt werden</string>
-    <string name="create_empty">Von Grund auf erstellen</string>
-    <string name="create_from_file">Aus Datei oder Archiv importieren</string>
-    <string name="create_from_qr_code">Von QR-Code scannen</string>
     <string name="create_output_dir_error">Konnte das Ausgabeverzeichnis nicht erstellen</string>
     <string name="create_temp_dir_error">Lokales temporäres Verzeichnis konnte nicht erstellt werden</string>
     <string name="create_tunnel">Tunnel erstellen</string>

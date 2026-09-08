@@ -92,9 +92,6 @@
     <string name="create_activity_title">ਵਾਇਰਗਾਰਡ ਟਨਲ ਬਣਾਓ</string>
     <string name="create_bin_dir_error">ਲੋਕਲ ਬਾਈਨਰੀ ਡਾਇਰੈਕਟਰੀ ਬਣਾਈ ਨਹੀਂ ਜਾ ਸਕਦੀ ਹੈ</string>
     <string name="create_downloads_file_error">ਡਾਊਨਲੋਡ ਡਾਇਰੈਕਟਰੀ ਵਿੱਚ ਫ਼ਾਇਲ ਬਣਾਈ ਨਹੀਂ ਜਾ ਸਕਦੀ ਹੈ</string>
-    <string name="create_empty">ਮੁੱਢ ਤੋਂ ਬਣਾਓ</string>
-    <string name="create_from_file">ਫ਼ਾਇਲ ਜਾਂ ਅਕਾਇਵ ਤੋਂ ਦਰਾਮਦ ਕਰੋ</string>
-    <string name="create_from_qr_code">QR ਕੋਡ ਤੋਂ ਸਕੈਨ ਕਰੋ</string>
     <string name="create_output_dir_error">ਆਉਟਪੁੱਟ ਡਾਇਰੈਕਟਰੀ ਬਣਾਈ ਨਹੀਂ ਜਾ ਸਕਦੀ ਹੈ</string>
     <string name="create_temp_dir_error">ਲੋਕਲ ਆਰਜ਼ੀ ਡਾਇਰੈਕਟਰੀ ਬਣਾਈ ਨਹੀਂ ਜਾ ਸਕਦੀ ਹੈ</string>
     <string name="create_tunnel">ਟਨਲ ਬਣਾਓ</string>

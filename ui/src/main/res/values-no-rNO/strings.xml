@@ -92,9 +92,6 @@
     <string name="create_activity_title">Opprett WireGuard tunnel</string>
     <string name="create_bin_dir_error">Kan ikke opprette lokal binærmappe</string>
     <string name="create_downloads_file_error">Kan ikke opprette fil i nedlastingsmappen</string>
-    <string name="create_empty">Lag fra begynnelsen</string>
-    <string name="create_from_file">Importer fra fil eller arkiv</string>
-    <string name="create_from_qr_code">Skann QR-kode</string>
     <string name="create_output_dir_error">Kan ikke opprette utdata-katalog</string>
     <string name="create_temp_dir_error">Kan ikke opprette lokal, midlertidig mappe</string>
     <string name="create_tunnel">Opprett tunnel</string>

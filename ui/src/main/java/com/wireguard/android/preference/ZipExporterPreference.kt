@@ -32,7 +32,7 @@ import java.util.zip.ZipOutputStream
  */
 class ZipExporterPreference(context: Context, attrs: AttributeSet?) : Preference(context, attrs) {
     private var exportedFilePath: String? = null
-    private val downloadsFileSaver = DownloadsFileSaver(activity)
+    private val downloadsFileSaver = DownloadsFileSaver(activity, activity)
 
     private fun exportZip() {
         lifecycleScope.launch {

@@ -2,19 +2,39 @@
   ~ Copyright © 2017-2025 WireGuard LLC. All Rights Reserved.
   ~ SPDX-License-Identifier: Apache-2.0
   -->
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:color="?attr/colorControlHighlight">
+
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/list_item_corner_radius" />
+            <solid android:color="@android:color/white" />
+        </shape>
+    </item>
+
     <item>
         <selector>
             <item
                 android:state_activated="true"
                 app:state_multiselected="true">
-                <color android:color="?attr/colorSurfaceVariant" />
+                <shape android:shape="rectangle">
+                    <corners android:radius="@dimen/list_item_corner_radius" />
+                    <solid android:color="?attr/colorSecondaryContainer" />
+                </shape>
             </item>
             <item android:state_activated="true">
-                <color android:color="?attr/colorControlHighlight" />
+                <shape android:shape="rectangle">
+                    <corners android:radius="@dimen/list_item_corner_radius" />
+                    <solid android:color="?attr/colorSurfaceVariant" />
+                </shape>
+            </item>
+            <item>
+                <shape android:shape="rectangle">
+                    <corners android:radius="@dimen/list_item_corner_radius" />
+                    <solid android:color="?attr/colorSurfaceBright" />
+                </shape>
             </item>
         </selector>
     </item>
-    <item android:drawable="?attr/selectableItemBackground" />
-</layer-list>
+</ripple>

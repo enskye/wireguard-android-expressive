@@ -92,9 +92,6 @@
     <string name="create_activity_title">WireGuard tüneli oluştur</string>
     <string name="create_bin_dir_error">Yerel ikili dizin oluşturulamadı</string>
     <string name="create_downloads_file_error">İndirilenler klasöründe dosya oluşturulamadı</string>
-    <string name="create_empty">Sıfırdan oluştur</string>
-    <string name="create_from_file">Dosyadan veya arşivden içe aktar</string>
-    <string name="create_from_qr_code">QR kodu okut</string>
     <string name="create_output_dir_error">Çıktı klasörü oluşturulamadı</string>
     <string name="create_temp_dir_error">Yerel geçici dizin oluşturulamadı</string>
     <string name="create_tunnel">Tünel oluştur</string>

@@ -8,10 +8,10 @@ package com.wireguard.android.util
 import android.content.Context
 import android.util.TypedValue
 import androidx.annotation.AttrRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import com.wireguard.android.Application
-import com.wireguard.android.activity.SettingsActivity
 import kotlinx.coroutines.CoroutineScope
 
 fun Context.resolveAttribute(@AttrRes attrRes: Int): Int {
@@ -23,9 +23,9 @@ fun Context.resolveAttribute(@AttrRes attrRes: Int): Int {
 val Any.applicationScope: CoroutineScope
     get() = Application.getCoroutineScope()
 
-val Preference.activity: SettingsActivity
-    get() = context as? SettingsActivity
-        ?: throw IllegalStateException("Failed to resolve SettingsActivity")
+val Preference.activity: AppCompatActivity
+    get() = context as? AppCompatActivity
+        ?: throw IllegalStateException("Failed to resolve the hosting activity")
 
 val Preference.lifecycleScope: CoroutineScope
     get() = activity.lifecycleScope

@@ -92,9 +92,6 @@
     <string name="create_activity_title">Crear túnel WireGuard</string>
     <string name="create_bin_dir_error">No s\'ha pogut crear la carpeta local pels binaris</string>
     <string name="create_downloads_file_error">No es pot crear arxiu en la carpeta de descàrregues</string>
-    <string name="create_empty">Crea des de zero</string>
-    <string name="create_from_file">Importa des de fitxer o arxiu</string>
-    <string name="create_from_qr_code">Escaneja codi QR</string>
     <string name="create_output_dir_error">Incapaç de crear directori de sortida</string>
     <string name="create_temp_dir_error">No s’ha pogut crear el directori local temporal</string>
     <string name="create_tunnel">Crear túnel</string>

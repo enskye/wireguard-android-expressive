@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.preference.Preference
 import com.wireguard.android.Application
 import com.wireguard.android.R
-import com.wireguard.android.activity.SettingsActivity
+import com.wireguard.android.activity.MainActivity
 import com.wireguard.android.backend.Tunnel
 import com.wireguard.android.backend.WgQuickBackend
 import com.wireguard.android.util.UserKnobs
@@ -54,7 +54,7 @@ class KernelModuleEnablerPreference(context: Context, attrs: AttributeSet?) : Pr
             try {
                 downings.awaitAll()
                 withContext(Dispatchers.IO) {
-                    val restartIntent = Intent(context, SettingsActivity::class.java)
+                    val restartIntent = Intent(context, MainActivity::class.java)
                     restartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     restartIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                     Application.get().startActivity(restartIntent)

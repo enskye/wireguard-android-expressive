@@ -92,9 +92,6 @@
     <string name="create_activity_title">WireGuard tunnel aanmaken</string>
     <string name="create_bin_dir_error">Kan geen lokale \'bin\' map aanmaken</string>
     <string name="create_downloads_file_error">Kan bestand niet maken in downloadmap</string>
-    <string name="create_empty">Begin met lege configuratie</string>
-    <string name="create_from_file">Importeren uit bestand of archief</string>
-    <string name="create_from_qr_code">Scan van QR code</string>
     <string name="create_output_dir_error">Kan de output map niet aanmaken</string>
     <string name="create_temp_dir_error">Kan geen tijdelijke map aanmaken</string>
     <string name="create_tunnel">Maak nieuwe tunnel</string>

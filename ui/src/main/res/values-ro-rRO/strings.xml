@@ -105,9 +105,6 @@
     <string name="create_activity_title">Creare tunel WireGuard</string>
     <string name="create_bin_dir_error">Nu se poate crea directorul binar local</string>
     <string name="create_downloads_file_error">Fișierul nu poate fi creat în directorul pentru descărcări</string>
-    <string name="create_empty">Creare de la zero</string>
-    <string name="create_from_file">Importare din fișier sau arhivă</string>
-    <string name="create_from_qr_code">Scanare din cod QR</string>
     <string name="create_output_dir_error">Nu se poate crea directorul de ieșire</string>
     <string name="create_temp_dir_error">Nu se poate crea directorul temporar local</string>
     <string name="create_tunnel">Creare tunel</string>

@@ -104,6 +104,19 @@ object UserKnobs {
         }
     }
 
+    private val FAVOURITE_TUNNELS = stringSetPreferencesKey("favourite_tunnels")
+    val favouriteTunnels: Flow<Set<String>>
+        get() = Application.getPreferencesDataStore().data.map {
+            it[FAVOURITE_TUNNELS] ?: emptySet()
+        }
+
+    suspend fun setFavouriteTunnels(names: Set<String>) {
+        Application.getPreferencesDataStore().edit {
+            if (names.isEmpty()) it.remove(FAVOURITE_TUNNELS)
+            else it[FAVOURITE_TUNNELS] = names
+        }
+    }
+
     private val UPDATER_NEWER_VERSION_CONSENTED = stringPreferencesKey("updater_newer_version_consented")
     val updaterNewerVersionConsented: Flow<String?>
         get() = Application.getPreferencesDataStore().data.map {

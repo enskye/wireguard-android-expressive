@@ -92,9 +92,6 @@
     <string name="create_activity_title">Créer un tunnel WireGuard</string>
     <string name="create_bin_dir_error">Impossible de créer le répertoire binaire local</string>
     <string name="create_downloads_file_error">Impossible de créer le fichier dans le répertoire des téléchargements</string>
-    <string name="create_empty">Créer à partir de zéro</string>
-    <string name="create_from_file">Importer depuis un fichier ou une archive</string>
-    <string name="create_from_qr_code">Importer depuis un QR code</string>
     <string name="create_output_dir_error">Impossible de créer le répertoire de sortie</string>
     <string name="create_temp_dir_error">Impossible de créer le répertoire temporaire local</string>
     <string name="create_tunnel">Créer un tunnel</string>

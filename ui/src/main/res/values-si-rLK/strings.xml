@@ -69,9 +69,6 @@
     <string name="create_activity_title">WireGuard Tunnel සාදන්න</string>
     <string name="create_bin_dir_error">දේශීය ද්විමය නාමාවලිය සෑදිය නොහැක</string>
     <string name="create_downloads_file_error">බාගැනීම් නාමාවලියෙහි ගොනුව සෑදීමට නොහැකිය</string>
-    <string name="create_empty">මුල සිට නිර්මාණය කරන්න</string>
-    <string name="create_from_file">ගොනුවකින් හෝ සංරක්‍ෂිතයකින් ආයාතය</string>
-    <string name="create_from_qr_code">QR කේතයෙන් සුපිරික්සන්න</string>
     <string name="create_output_dir_error">ප්‍රතිදාන නාමාවලිය සෑදිය නොහැකිය</string>
     <string name="create_temp_dir_error">තාවකාලික ස්ථානීය නාමාවලිය සෑදිය නොහැකිය</string>
     <string name="copied_to_clipboard">%s පසුරුපුවරුවට පිටපත්විය</string>

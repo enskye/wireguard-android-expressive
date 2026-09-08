@@ -118,9 +118,6 @@
     <string name="create_activity_title">Utwórz tunel WireGuard</string>
     <string name="create_bin_dir_error">Nie można utworzyć lokalnego folderu dla plików wykonywalnych</string>
     <string name="create_downloads_file_error">Nie można utworzyć pliku w folderze pobierania</string>
-    <string name="create_empty">Utwórz ręcznie</string>
-    <string name="create_from_file">Utwórz z pliku lub archiwum</string>
-    <string name="create_from_qr_code">Zeskanuj kod QR</string>
     <string name="create_output_dir_error">Nie można utworzyć folderu wyjściowego</string>
     <string name="create_temp_dir_error">Nie można utworzyć tymczasowego folderu lokalnego</string>
     <string name="create_tunnel">Utwórz tunel</string>

@@ -20,11 +20,13 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.core.os.BundleCompat
 import androidx.core.view.MenuProvider
+
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.wireguard.android.Application
 import com.wireguard.android.R
+import com.wireguard.android.util.padForNavigationBar
 import com.wireguard.android.backend.Tunnel
 import com.wireguard.android.databinding.TunnelEditorFragmentBinding
 import com.wireguard.android.model.ObservableTunnel
@@ -86,6 +88,7 @@ class TunnelEditorFragment : BaseFragment(), MenuProvider {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        binding?.editorScrollView?.padForNavigationBar()
     }
 
     override fun onDestroyView() {

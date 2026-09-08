@@ -5,14 +5,26 @@
  */
 package com.wireguard.android.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.view.MotionEvent
 import com.google.android.material.materialswitch.MaterialSwitch
 
 class ToggleSwitch @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : MaterialSwitch(context, attrs) {
     private var isRestoringState = false
     private var listener: OnBeforeCheckedChangeListener? = null
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        when (event.actionMasked) {
+            MotionEvent.ACTION_DOWN -> parent?.requestDisallowInterceptTouchEvent(true)
+            MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL ->
+                parent?.requestDisallowInterceptTouchEvent(false)
+        }
+        return super.onTouchEvent(event)
+    }
     override fun onRestoreInstanceState(state: Parcelable) {
         isRestoringState = true
         super.onRestoreInstanceState(state)

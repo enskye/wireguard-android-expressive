@@ -118,9 +118,6 @@
     <string name="create_activity_title">Створити тунель WireGuard</string>
     <string name="create_bin_dir_error">Не вдалося створити локальну бінарну теку</string>
     <string name="create_downloads_file_error">Не вдалося створити файл в папці завантажень</string>
-    <string name="create_empty">Створити з нуля</string>
-    <string name="create_from_file">Імпортувати з файлу або архіву</string>
-    <string name="create_from_qr_code">Сканувати з QR-коду</string>
     <string name="create_output_dir_error">Неможливо створити вихідний каталог</string>
     <string name="create_temp_dir_error">Не вдалося створити локальну тимчасову папку</string>
     <string name="create_tunnel">Створити тунель</string>

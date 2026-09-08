@@ -3,7 +3,7 @@
   ~ SPDX-License-Identifier: Apache-2.0
   -->
 <resources>
-    <style name="WireGuardTheme" parent="Theme.Material3.Light">
+    <style name="WireGuardTheme" parent="Theme.Material3Expressive.Light">
         <item name="colorPrimary">@color/md_theme_light_primary</item>
         <item name="colorOnPrimary">@color/md_theme_light_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_light_primaryContainer</item>

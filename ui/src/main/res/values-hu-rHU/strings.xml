@@ -33,9 +33,6 @@
     <string name="create_activity_title">WireGuard alagút létrehozása</string>
     <string name="create_bin_dir_error">Nem lehet létrehozni helyi bináris könyvtárat</string>
     <string name="create_downloads_file_error">Nem lehet létrehozni a fájlt a letöltések könyvtárban</string>
-    <string name="create_empty">Létrehozás az alapoktól</string>
-    <string name="create_from_file">Fájlból vagy tömörített állományból importálás</string>
-    <string name="create_from_qr_code">Beolvasás QR kódból</string>
     <string name="create_output_dir_error">Nem lehet kimeneti könyvtárat létrehozni</string>
     <string name="create_temp_dir_error">Nem lehet létrehozni helyi átmeneti könyvtárat</string>
     <string name="create_tunnel">Alagút létrehozása</string>

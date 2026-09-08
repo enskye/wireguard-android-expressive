@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_fab_add_cross">
+    <target
+        android:name="cross"
+        android:animation="@animator/fab_cross_to_plus" />
+</animated-vector>

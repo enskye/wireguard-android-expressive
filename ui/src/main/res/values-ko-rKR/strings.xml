@@ -79,9 +79,6 @@
     <string name="create_activity_title">WireGuard 터널 만들기</string>
     <string name="create_bin_dir_error">로컬 바이너리 디렉터리를 만들 수 없음</string>
     <string name="create_downloads_file_error">다운로드 디렉토리에 파일을 만들 수 없음</string>
-    <string name="create_empty">직접 만들기</string>
-    <string name="create_from_file">파일 또는 압축파일에서 불러오기</string>
-    <string name="create_from_qr_code">QR코드 스캔</string>
     <string name="create_output_dir_error">출력 디렉토리를 만들 수 없음</string>
     <string name="create_temp_dir_error">로컬 임시 디렉토리를 만들 수 없음</string>
     <string name="create_tunnel">터널 만들기</string>

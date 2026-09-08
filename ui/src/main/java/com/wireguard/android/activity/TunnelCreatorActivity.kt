@@ -15,6 +15,8 @@ class TunnelCreatorActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.tunnel_creator_activity)
+        setSupportActionBar(findViewById(R.id.app_toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
     override fun onSelectedTunnelChanged(oldTunnel: ObservableTunnel?, newTunnel: ObservableTunnel?): Boolean {

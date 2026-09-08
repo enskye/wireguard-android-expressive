@@ -118,9 +118,6 @@
     <string name="create_activity_title">Ustvarite tunel WireGuard</string>
     <string name="create_bin_dir_error">Lokalnega imenika za aplikacijo ni bilo mogoče ustvariti</string>
     <string name="create_downloads_file_error">Datoteke v mapi prenosov ni bilo mogoče ustvariti</string>
-    <string name="create_empty">Ustvari na novo</string>
-    <string name="create_from_file">Uvozi iz datoteke ali arhiva</string>
-    <string name="create_from_qr_code">Skreniraj kodo QR</string>
     <string name="create_output_dir_error">Izhodnega imenika ni bilo mogoče ustvariti</string>
     <string name="create_temp_dir_error">Lokalnega začasnega imenika ni bilo mogoče ustvariti</string>
     <string name="create_tunnel">Ustvari tunel</string>

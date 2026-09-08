@@ -31,9 +31,10 @@
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorSurface">
+        android:background="?attr/colorSurfaceContainer">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/editor_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -42,28 +43,26 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/interface_title"
+                    style="@style/WireGuardTheme.SectionHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/list_item_inset"
+                    android:layout_marginEnd="@dimen/list_item_inset"
+                    android:text="@string/interface_title" />
+
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="@dimen/list_item_inset"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="@dimen/list_item_inset"
                     android:layout_marginBottom="16dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/interface_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            android:layout_marginTop="32dp"
-                            android:text="@string/interface_title"
-                            android:textAppearance="?attr/textAppearanceTitleMedium"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/interface_name_layout"
@@ -73,7 +72,7 @@
                             android:hint="@string/name"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/interface_title">
+                            app:layout_constraintTop_toTopOf="parent">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/interface_name_text"
@@ -193,7 +192,6 @@
                                 android:textAlignment="center" />
                         </com.google.android.material.textfield.TextInputLayout>
 
-
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/dns_servers_label_layout"
                             android:layout_width="0dp"
@@ -246,7 +244,7 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/set_excluded_applications"
-                            style="@style/Widget.Material3.Button.TextButton"
+                            style="@style/Widget.Material3Expressive.Button.TextButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_margin="4dp"
@@ -278,18 +276,16 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_peer_button"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="match_parent"
+                    style="@style/WireGuardTheme.AddPeerButton"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="bottom"
-                    android:background="?attr/colorPrimaryDark"
-                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="24dp"
+                    android:contentDescription="@string/add_peer"
                     android:onClick="@{() -> config.addPeer()}"
-                    android:text="@string/add_peer"
-                    android:textColor="?attr/colorSecondary"
-                    app:layout_anchorGravity="bottom"
-                    app:rippleColor="?attr/colorSecondary" />
+                    app:icon="@drawable/ic_action_add_white" />
             </LinearLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

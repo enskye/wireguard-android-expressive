@@ -51,6 +51,35 @@ class TunnelManager(private val configStore: ConfigStore) : BaseObservable() {
 
     suspend fun getTunnels(): ObservableSortedKeyedArrayList<String, ObservableTunnel> = tunnels.await()
 
+    private fun resort() {
+        if (tunnelMap.isEmpty()) return
+        val snapshot = ArrayList(tunnelMap)
+        tunnelMap.clear()
+        tunnelMap.addAll(snapshot)
+    }
+
+    private fun observeFavourites() {
+        applicationScope.launch {
+            UserKnobs.favouriteTunnels.collect { names ->
+                if (TunnelComparator.favourites == names) return@collect
+                TunnelComparator.favourites = names
+                withContext(Dispatchers.Main.immediate) { resort() }
+            }
+        }
+    }
+
+    suspend fun setFavourite(names: Collection<String>, favourite: Boolean) {
+        val current = UserKnobs.favouriteTunnels.first()
+        val updated = if (favourite) current + names else current - names.toSet()
+        if (updated != current)
+            UserKnobs.setFavouriteTunnels(updated)
+    }
+
+    suspend fun areAllFavourites(names: Collection<String>): Boolean {
+        if (names.isEmpty()) return false
+        return UserKnobs.favouriteTunnels.first().containsAll(names)
+    }
+
     suspend fun create(name: String, config: Config?): ObservableTunnel = withContext(Dispatchers.Main.immediate) {
         if (Tunnel.isNameInvalid(name))
             throw IllegalArgumentException(context.getString(R.string.tunnel_error_invalid_name))
@@ -99,6 +128,7 @@ class TunnelManager(private val configStore: ConfigStore) : BaseObservable() {
     }
 
     fun onCreate() {
+        observeFavourites()
         applicationScope.launch {
             try {
                 onTunnelsLoaded(withContext(Dispatchers.IO) { configStore.enumerate() }, withContext(Dispatchers.IO) { getBackend().runningTunnelNames })
@@ -140,7 +170,8 @@ class TunnelManager(private val configStore: ConfigStore) : BaseObservable() {
         if (previouslyRunning.isEmpty()) return
         withContext(Dispatchers.IO) {
             try {
-                tunnelMap.filter { previouslyRunning.contains(it.name) }.map { async(Dispatchers.IO + SupervisorJob()) { setTunnelState(it, Tunnel.State.UP) } }
+                tunnelMap.filter { previouslyRunning.contains(it.name) && it.state != Tunnel.State.UP }
+                    .map { async(Dispatchers.IO + SupervisorJob()) { setTunnelState(it, Tunnel.State.UP) } }
                     .awaitAll()
             } catch (e: Throwable) {
                 Log.e(TAG, Log.getStackTraceString(e))
@@ -195,6 +226,9 @@ class TunnelManager(private val configStore: ConfigStore) : BaseObservable() {
     }
 
     suspend fun setTunnelState(tunnel: ObservableTunnel, state: Tunnel.State): Tunnel.State = withContext(Dispatchers.Main.immediate) {
+        if (tunnel.state == state)
+            Log.w(TAG, "setTunnelState(${tunnel.name}, $state) while already $state",
+                    Throwable("caller"))
         var newState = tunnel.state
         var throwable: Throwable? = null
         try {
